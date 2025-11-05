@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Nuris!</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f7dc6f);
+            background-size: 400% 400%;
+            animation: gradientShift 5s ease infinite;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes float3D {
+            0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+            33% { transform: translateY(-20px) rotateX(10deg) rotateY(120deg); }
+            66% { transform: translateY(-10px) rotateX(-10deg) rotateY(240deg); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(100px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+        .gift-container {
+            cursor: pointer;
+            animation: float3D 6s ease-in-out infinite;
+        }
+        .gift-box {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24, #ff9ff3, #54a0ff);
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transition: all 0.8s cubic-bezier(.68,-.55,.265,1.55);
+        }
+        .gift-lid {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            height: 40px;
+            background: linear-gradient(45deg, #ffd700, #ffb347);
+            border-radius: 20px 20px 10px 10px;
+            transform-origin: bottom;
+            transition: transform 1s ease;
+        }
+        .gift-ribbon {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(180deg, #ffd700, #ffb347);
+        }
+        .gift-bow {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            color: #ffd700;
+        }
+        .gift-opened .gift-lid {
+            transform: rotateX(-90deg);
+        }
+        .surprise-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: all 1s ease;
+            text-align: center;
+        }
+        .gift-opened .surprise-message {
+            opacity: 1;
+            animation: slideUp 1s ease-out .5s both;
+        }
+        .hero-title {
+            font-size: 3rem;
+            margin-top: 2rem;
+        }
+        .click-hint {
+            color: #ffd700;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+        @keyframes twinkle { 0%,100%{opacity:.5;} 50%{opacity:1;} }
+
+        .birthday-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        .birthday-content.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ✅ VIDEO RESPONSIVE */
+        video {
+            width: 90%;
+            max-width: 900px;
+            border-radius: 10px;
+            margin: 30px 0;
+            display: block;
+        }
+
+        button {
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #e91e63;
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="gift-container" id="giftContainer">
+        <div class="gift-box" id="giftBox">
+            <div class="gift-lid"></div>
+            <div class="gift-ribbon"></div>
+            <div class="gift-bow">🎀</div>
+            <div class="surprise-message">
+                <div style="font-size: 2rem;">🎉</div>
+                <div style="font-size: 1.2rem; margin-top: 1rem;">Surprise!</div>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="hero-title">Happy Birthday Nuris!</h1>
+    <p class="click-hint" id="clickHint">✨ Klik kotak hadiah di atas ✨</p>
+</section>
+
+<div class="birthday-content" id="birthdayContent">
+    <h1>🎉 Selamat Ulang Tahun Nuris 🎂</h1>
+    <p>Semoga tahun ini membawa kedamaian, Panjang Umur, dan juga kesehatan selalu.</p>
+
+    <!-- ✅ VIDEO AUTOPLAY TANPA SUARA -->
+    <video id="birthdayVideo" autoplay muted playsinline loop>
+        <source src="ultah.mp4" type="video/mp4">
+    </video>
+
+    <button onclick="sendToWhatsApp()">Kirim Harapan ke WhatsApp Saya</button>
+</div>
+
+<!-- Musik tetap manual play setelah gift -->
+<audio id="birthdaySong" src="lagu_ultah.mp3" loop preload="auto"></audio>
+
+<script>
+document.getElementById('giftContainer').addEventListener('click', function() {
+    document.getElementById('birthdaySong').play();
+    document.getElementById('birthdayVideo').play();
+    document.getElementById('clickHint').textContent = '👇 Silahkan scroll ke bawah 👇';
+    document.getElementById('giftBox').classList.add('gift-opened');
+    setTimeout(() => {
+        document.getElementById('birthdayContent').classList.add('show');
+    }, 1500);
+});
+
+function sendToWhatsApp() {
+    const phoneNumber = '628979601987';
+    const message = encodeURIComponent('Selamat ulang tahun! 🎉');
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+}
+</script>
+
+</body>
+</html>
